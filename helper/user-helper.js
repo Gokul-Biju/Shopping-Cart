@@ -3,11 +3,6 @@ const bcrypt = require('bcrypt')
 const { ObjectId } = require('mongodb');
 const Razorpay = require('razorpay')
 
-// var instance = new Razorpay({
-//     key_id: 'rzp_test_QECw6lqG3ljlZk',
-//     key_secret: 'ABEW3cODjfD2rc0bGPuPvePN',
-// });
-
 module.exports = {
 
     register: (userData) => {
@@ -305,7 +300,7 @@ module.exports = {
             var instance = new Razorpay({ key_id: 'rzp_test_QECw6lqG3ljlZk', key_secret: 'ABEW3cODjfD2rc0bGPuPvePN' })
 
             var options = {
-                amount: price*100,  // Amount is in currency subunits. Default currency is INR. Hence, 50000 refers to 50000 paise
+                amount: price*100,
                 currency: "INR",
                 receipt: ""+orderId
             };
