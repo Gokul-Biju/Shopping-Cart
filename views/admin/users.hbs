@@ -1,0 +1,22 @@
+<div class="container mt-5">
+<table class="table">
+  <thead>
+    <tr>
+      <th scope="col">Name</th>
+      <th scope="col" class="ps-3">email</th>
+      <th scope="col" class="ps-3">Orders</th>
+    </tr>
+  </thead>
+  <tbody>
+    {{#each users}}
+    <tr>
+      <td>{{this.username}}</td>
+      <td>{{this.email}}</td>
+      <td>{{this.order}}</td>
+      <td><a href="/admin/view-orders/{{this._id}}" class="btn btn-danger">View Orders</a></td>
+    </tr>
+    {{/each}}
+  </tbody>
+</table>
+</div>
+  

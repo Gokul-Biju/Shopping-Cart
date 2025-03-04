@@ -1,0 +1,96 @@
+<div class="container mt-5">
+  <table class="table">
+    <thead>
+      <tr>
+        <th scope="col">Name</th>
+        <th scope="col">Date</th>
+        <th scope="col">Address</th>
+        <th scope="col">Price</th>
+        <th scope="col">Status</th>
+        <th scope="col">Payment</th>
+        <th scope="col">Actions</th>
+      </tr>
+    </thead>
+    <tbody>
+      {{#each orders}}
+      <tr>
+        <td>{{this.deliverydetails.name}}</td>
+        <td>{{this.date}}</td>
+        <td>{{this.deliverydetails.address}}</td>
+        <td>{{this.TotalPrice}}</td>
+        <td id="status-{{this._id}}">{{this.status}}</td>
+        <td>{{this.payment_method}}</td>
+        <td>
+          <a href="/admin/view-placed-order/{{this._id}}" class="btn btn-primary">View Order</a>
+          <a class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#modal-{{this._id}}">Edit Delivery</a>
+        </td>
+      </tr>
+
+      <div class="modal fade" id="modal-{{this._id}}" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h5 class="modal-title" id="exampleModalLabel">Edit Delivery Status</h5>
+              <button type="button" class="close" data-bs-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+              </button>
+            </div>
+            <div class="modal-body">
+              <input type="radio" name="status-{{this._id}}" id="update-status-{{this._id}}-1" value="Shipped">
+              <label for="update-status-{{this._id}}-1" style="padding-right: 10px;">Shipped</label>
+              <input type="radio" name="status-{{this._id}}" id="update-status-{{this._id}}-2" value="On-theWay">
+              <label for="update-status-{{this._id}}-2" style="padding-right: 10px;">On-theWay</label>
+              <input type="radio" name="status-{{this._id}}" id="update-status-{{this._id}}-3" value="Delivered">
+              <label for="update-status-{{this._id}}-3" style="padding-right: 10px;">Delivered</label>
+            </div>
+            <div class="modal-footer">
+              <button type="button" class="btn btn-primary" data-bs-dismiss="modal" onclick="change('{{this._id}}')">Save changes</button>
+            </div>
+          </div>
+        </div>
+      </div>
+      {{/each}}
+    </tbody>
+  </table>
+</div>
+
+<script>
+
+  document.addEventListener("DOMContentLoaded", function() {
+    document.querySelectorAll("[id^='modal-']").forEach(modal => {
+      modal.addEventListener("show.bs.modal", function() {
+        let orderId = modal.id.replace("modal-", "");
+        let status = document.getElementById(`status-${orderId}`).innerText.trim();
+
+        let radioButton = document.querySelector(`input[name="status-${orderId}"][value="${status}"]`);
+        if (radioButton) {
+          radioButton.checked = true;
+        }
+      });
+    });
+  });
+
+function change(orderId){
+  var selectedStatus = document.querySelector(`input[name="status-${orderId}"]:checked`);
+  
+  if (!selectedStatus) {
+    alert("Please select a status before saving.");
+    return;
+  }
+
+  var status = selectedStatus.value;
+
+  $.ajax({
+    url: '/admin/update-status',
+    data: { orderId, status },
+    method: 'post',
+    success: (response) => {
+      if (response.value) {
+        document.getElementById(`status-${orderId}`).innerHTML = status;
+      } else {
+        alert('Failed');
+      }
+    }
+  });
+}
+</script>

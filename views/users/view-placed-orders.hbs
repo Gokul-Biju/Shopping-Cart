@@ -1,0 +1,20 @@
+<section>
+    <div class="container">
+        <div class="row mt-5">
+            {{#each products}}
+            <div class="col-md-3 p-4">
+                
+                <div class="card" style="width: 18rem;height: 30rem;">
+  <img src="/images/{{this.product._id}}.jpg" class="card-img-top p-4" alt="..." style="width: 15rem;height: 20rem">
+  <div class="card-body">
+    <h5 class="card-title">{{this.product.name}}</h5>
+    <p class="card-text">Price: Rs{{this.product.price}}</p>
+    <h4>Quantity: {{this.quantity}}</h4>
+  </div>
+</div>
+
+            </div>
+            {{/each}}
+        </div>
+    </div>
+</section>

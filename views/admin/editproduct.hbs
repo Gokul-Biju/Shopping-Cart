@@ -1,0 +1,36 @@
+<div class="container">
+    <div class="row d-flex justify-content-center align-items-center vh-100">
+        <div class="col-md-6">
+            <form action="/admin/editproduct/{{response._id}}" method="post" enctype="multipart/form-data">
+                <div class="mb-3">
+                    <label for="name" class="form-label">Name</label>
+                    <input type="text" name="name" class="form-control" id="name" value="{{response.name}}">
+                </div>
+                <div class="mb-3">
+                    <label for="category" class="form-label">Category</label>
+                    <input type="text" name="category" class="form-control" id="category" value="{{response.category}}">
+                </div>
+                <div class="mb-3">
+                    <label for="description" class="form-label">Description</label>
+                    <input type="text" name="description" class="form-control" id="description" value="{{response.description}}">
+                </div>
+                <div class="mb-3">
+                    <label for="description" class="form-label">Price</label>
+                    <input type="number" min="0" max="10000000" name="price" class="form-control" id="description" value="{{response.price}}">
+                </div>
+                <div class="mb-3">
+                    <label for="formFile" class="form-label">image</label>
+                    <img src="/images/{{response._id}}.jpg" alt="" id="imageview">
+                    <input class="form-control" type="file" id="formFile" name="Image" onchange="Viewimage(event)">
+                </div>
+                <button type="submit" class="btn btn-primary">Submit</button>
+            </form>
+        </div>
+    </div>
+</div>
+
+<script>
+    function Viewimage(event){
+        document.getElementById("imageview").src=URL.createObjectURL(event.target.files[0])
+    }
+</script>

@@ -1,0 +1,36 @@
+<div class="container mt-5">
+<table class="table" id="myTable">
+  <thead>
+    <tr>
+      <th scope="col">Name</th>
+      <th scope="col">Date</th>
+      <th scope="col">Address</th>
+      <th scope="col">Price</th>
+      <th scope="col">Status</th>
+      <th scope="col">Payment</th>
+      <th scope="col">View-Order</th>
+    </tr>
+  </thead>
+  <tbody>
+    {{#each orders}}
+    <tr>
+      <td>{{this.deliverydetails.name}}</td>
+      <td>{{this.date}}</td>
+      <td>{{this.deliverydetails.address}}</td>
+      <td>{{this.TotalPrice}}</td>
+      <td>{{this.status}}</td>
+      <td>{{this.payment_method}}</td>
+      <td><a href="/admin/view-placed-order/{{this._id}}" class="btn btn-primary">View Order</a>
+      </td>
+    </tr>
+    {{/each}}
+  </tbody>
+</table>
+</div>
+
+<script> 
+$(document).ready(function () {
+    $('#myTable').DataTable();
+});
+
+</script>

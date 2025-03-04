@@ -1,0 +1,82 @@
+<div class="container mt-5">
+<table class="table">
+  <thead>
+    <tr>
+      <th scope="col">Image</th>
+      <th scope="col" class="ps-3">Name</th>
+      <th scope="col" class="ps-3">Price</th>
+      <th scope="col" class="ps-4">Quantity</th>
+    </tr>
+  </thead>
+  <tbody>
+    {{#each products}}
+    <tr>
+      <td><img src="/images/{{this.product._id}}.jpg" alt="" style="width: 50px;height: 50px"></td>
+      <td>{{this.product.name}}</td>
+      <td>{{this.product.price}}</td>
+      <td>
+        <a class="btn btn-secondary" onclick="changeQuantity('{{this._id}}','{{this.product._id}}',1,'{{../data._id}}')">+</a>
+        <span class="mx-2" id="{{this.product._id}}">{{this.quantity}}</span>
+        <a class="btn btn-secondary" onclick="changeQuantity('{{this._id}}','{{this.product._id}}',-1,'{{../data._id}}')">-</a>
+      </td>
+      <td><a onclick="deleteCartitem('{{this._id}}','{{this.product._id}}')" class="btn btn-danger">Remove</a></td>
+    </tr>
+    {{/each}}
+  </tbody>
+</table>
+{{#if display}}
+<div style="padding-left: 950px;">
+  <h5>Total Price: <span id="total">{{total}}</span></h5>
+</div>
+<div style="padding-left: 950px;">
+  <a class="btn btn-primary mt-3" href="/user/orders">Place Order</a>
+</div>
+{{/if}}
+</div>
+
+<script>
+  
+  function deleteCartitem(cartId,prodId){
+      $.ajax({
+        url:'/user/delete-cart-item',
+        data:{
+          cart:cartId,
+          product:prodId
+        },
+        method:'post',
+        success:(response)=>{
+          if(response)
+            location.reload()
+        }
+      })
+  }
+
+  function changeQuantity(cartId,prodId,count,userId){
+    count=parseInt(count)
+    let quantity = parseInt(document.getElementById(prodId).innerHTML)
+    $.ajax({
+        url:'/user/changequantity',
+        data:{
+          cart:cartId,
+          product:prodId,
+          count:count,
+          quantity:quantity,
+          userId:userId
+        },
+        method:'POST',
+        success:(response)=>{
+          if(response.removeProduct)
+          {
+            location.reload()
+          }else{
+             document.getElementById(prodId).innerHTML= parseInt(document.getElementById(prodId).innerHTML)+count
+             document.getElementById('total').innerHTML=response.total
+             let value=$('#cart-count').html()
+                    value=parseInt(value)+count
+                    $('#cart-count').html(value)
+          }
+        }
+    })
+  }
+</script>
+  
